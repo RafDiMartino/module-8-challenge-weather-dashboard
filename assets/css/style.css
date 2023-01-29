@@ -1,0 +1,65 @@
+.input-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid ;
+}
+
+.input-group input {
+    margin-bottom: 1rem;
+    border-radius: 3px;
+    padding: .3rem;
+    border: 1px solid;
+}
+
+.input-group button {
+    width: 100%;
+    border-radius: 3px !important;
+}
+
+.today-weather{
+    background-color: rgb(215, 215, 215);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 2rem;
+}
+
+.date-wrapper{
+    display: flex;
+}
+
+.today-weather h3{
+    font-size: 1.5rem;
+    padding: .5rem 1rem 0 0;
+}
+
+.today-weather img{
+    object-fit: cover;
+    width: 50px;
+}
+
+#forecast {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 0;
+    gap: 16px;
+}
+
+#forecast-title h3 {
+    /* text-align: center; */
+}
+
+.forecast-card {
+    display: flex;
+    /* justify-content: space-between; */
+    /* align-items: center; */
+    padding: 1rem;
+    background-color: rgb(215, 215, 215) !important;
+    border: 1px solid black !important;
+}
+

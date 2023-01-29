@@ -31,9 +31,11 @@ function getCurrentCity(){
         weatherToday.html(`
             <div class="today-weather">
                 <h2>${city}</h2>
-                <h3>${todayDate}</h3>
-                <img src="${weatherIcon}" alt="${weatherIconAlt}">
-                <p>Temp: ${temperature.toFixed(2)} °C</p>
+                <div class="date-wrapper">
+                    <h3>${todayDate}</h3>
+                    <img src="${weatherIcon}" alt="${weatherIconAlt}">
+                </div>
+                <p>Temp: ${temperature.toFixed()} °C</p>
                 <p>Wind: ${windSpeed} m/s</p>
                 <p>Humidity: ${humidity}%</p>
             </div>
@@ -55,9 +57,9 @@ function get5DaysForecast(latitude, longitude){
         for (let i = 8; i < data.list.length; i++) {
             if (i % 8 === 0 || i === data.list.length - 1) {
             weatherForecast.append(`
-                    <div class="card m-5">
+                    <div class="card forecast-card">
                         ${moment(data.list[i].dt_txt).format('ddd Do')}    
-                        <p>Temp: ${(data.list[i].main.temp - 273.15).toFixed(2)} °C</p>
+                        <p>Temp: ${(data.list[i].main.temp - 273.15).toFixed()} °C</p>
                     </div>
             `);
             }
@@ -99,7 +101,7 @@ function addBtnPastSearch(){
     for (let i = 0; i < searches.length; i++) {
         const element = searches[i];
         if (searches[i].includes(cityName)) {
-            pastSearches.prepend($(`<button class="past-search" data-city="${element}">`).text(element));
+            pastSearches.prepend($(`<button class="past-search btn btn-secondary mb-2" data-city="${element}">`).text(element));
         } 
     }
 }
