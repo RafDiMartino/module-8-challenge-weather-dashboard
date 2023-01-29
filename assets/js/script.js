@@ -1,18 +1,21 @@
 const API = "7064144a9fb66ec04495c5ff9bb9d495";
 const weatherToday = $("#today");
 const weatherForecast = $("#forecast");
+const forecastTitle = $("#forecast-title")
 const pastSearches = $("#history");
-var cityName = ""
-var searches = []
+var cityName = "";
+var searches = [];
 
-//ajax call
+// Function to get the current city weather
 function getCurrentCity(){
     var queryURL ="https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + API;
+
     $.ajax({
         url: queryURL,
         method: "GET"
     }).then(function(data) {
-        console.log(data)
+        var latitude = data.city.coord.lat; // pulls in lat
+        var longitude = data.city.coord.lon; // pulls in lon
         var city = data.city.name
         var todayDate = moment().format('ddd Do MMMM YYYY')
         var weatherIcon ="http://openweathermap.org/img/w/" + data.list[0].weather[0].icon + ".png";
@@ -21,16 +24,49 @@ function getCurrentCity(){
         var windSpeed = data.list[0].wind.speed
         var humidity = data.list[0].main.humidity
         
+        forecastTitle.append(`
+        <h3>5 Day Forecast</h3>
+        `);
+
         weatherToday.html(`
-            <h2>${city}</h2>
-            <h2>${todayDate}</h2>
-            <img src="${weatherIcon}" alt="${weatherIconAlt}">
-            <p>Temp: ${temperature.toFixed(2)} °C</p>
-            <p>Wind: ${windSpeed} m/s</p>
-            <p>Humidity: ${humidity}%</p>
+            <div class="today-weather">
+                <h2>${city}</h2>
+                <h3>${todayDate}</h3>
+                <img src="${weatherIcon}" alt="${weatherIconAlt}">
+                <p>Temp: ${temperature.toFixed(2)} °C</p>
+                <p>Wind: ${windSpeed} m/s</p>
+                <p>Humidity: ${humidity}%</p>
+            </div>
         `)
+        get5DaysForecast(latitude, longitude)
+    });
+    
+}
+// Function to get 5 days forecast weather
+function get5DaysForecast(latitude, longitude){
+    var queryURL5days = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=" + API;
+    $.ajax({
+        url: queryURL5days,
+        method: "GET"
+    }).then(function(data) {
+        // console.log(data)
+        // console.log(latitude)
+        // console.log(longitude);
+        for (let i = 8; i < data.list.length; i++) {
+            if (i % 8 === 0 || i === data.list.length - 1) {
+            weatherForecast.append(`
+                    <div class="card m-5">
+                        ${moment(data.list[i].dt_txt).format('ddd Do')}    
+                        <p>Temp: ${(data.list[i].main.temp - 273.15).toFixed(2)} °C</p>
+                    </div>
+            `);
+            }
+        };
     });
 }
+
+
+
 
 // function for the click event search button 
 $("#search-button").click(function(e) {
@@ -41,9 +77,10 @@ $("#search-button").click(function(e) {
     }else{
         searches.push(cityName)
     } 
-    console.log(searches);
     getCurrentCity();
     addBtnPastSearch()
+    weatherForecast.empty()
+    forecastTitle.empty()
 });
 
 // Adds a click event to all the buttons wiht a class of past-search 
@@ -52,8 +89,9 @@ $(document).on('click', '.past-search', theFuncToCall);
 // Function to re-display the current weather based on the click of past-searches buttons
 function theFuncToCall(){
     cityName = $(this).attr("data-city")
-    console.log(cityName);
     getCurrentCity()
+    weatherForecast.empty()
+    forecastTitle.empty()
 }
 
 // Function to display past searches buttons 
@@ -61,8 +99,7 @@ function addBtnPastSearch(){
     for (let i = 0; i < searches.length; i++) {
         const element = searches[i];
         if (searches[i].includes(cityName)) {
-            pastSearches.append($(`<button class="past-search" data-city="${element}">`).text(element));
-        }
-        
+            pastSearches.prepend($(`<button class="past-search" data-city="${element}">`).text(element));
+        } 
     }
 }
