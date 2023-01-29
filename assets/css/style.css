@@ -44,22 +44,28 @@
 #forecast {
     display: flex;
     width: 100%;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
     margin: 0;
     gap: 16px;
 }
 
-#forecast-title h3 {
-    /* text-align: center; */
-}
+/* #forecast-title h3 {
+    text-align: center;
+} */
 
 .forecast-card {
-    display: flex;
+    /* display: flex; */
     /* justify-content: space-between; */
     /* align-items: center; */
     padding: 1rem;
     background-color: rgb(215, 215, 215) !important;
     border: 1px solid black !important;
+    max-width: 191px;
+    width: 100%;
+}
+
+.forecast-card img{
+    width: 50px;
 }
 

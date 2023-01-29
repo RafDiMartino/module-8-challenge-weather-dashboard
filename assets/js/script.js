@@ -51,6 +51,8 @@ function get5DaysForecast(latitude, longitude){
         url: queryURL5days,
         method: "GET"
     }).then(function(data) {
+        var weatherIcon ="http://openweathermap.org/img/w/" + data.list[0].weather[0].icon + ".png";
+        var weatherIconAlt = data.list[0].weather[0].main
         // console.log(data)
         // console.log(latitude)
         // console.log(longitude);
@@ -58,8 +60,11 @@ function get5DaysForecast(latitude, longitude){
             if (i % 8 === 0 || i === data.list.length - 1) {
             weatherForecast.append(`
                     <div class="card forecast-card">
-                        ${moment(data.list[i].dt_txt).format('ddd Do')}    
+                        ${moment(data.list[i].dt_txt).format('ddd Do')}  
+                        <img src="${weatherIcon}" alt="${weatherIconAlt}">  
                         <p>Temp: ${(data.list[i].main.temp - 273.15).toFixed()} °C</p>
+                        <p>Wind: ${data.list[i].wind.speed} m/s</p>
+                        <p>Humidity: ${data.list[i].main.humidity}%</p>
                     </div>
             `);
             }
