@@ -30,14 +30,14 @@ function getCurrentCity(){
 
         weatherToday.html(`
             <div class="today-weather">
-                <h2>${city}</h2>
+                <h2 class="text-shadow">${city}</h2>
                 <div class="date-wrapper">
-                    <h3>${todayDate}</h3>
+                    <h3 class="text-shadow">${todayDate}</h3>
                     <img src="${weatherIcon}" alt="${weatherIconAlt}">
                 </div>
-                <p>Temp: ${temperature.toFixed()} °C</p>
-                <p>Wind: ${windSpeed} m/s</p>
-                <p>Humidity: ${humidity}%</p>
+                <p class="text-shadow">Temp: ${temperature.toFixed()} °C</p>
+                <p class="text-shadow">Wind: ${windSpeed} m/s</p>
+                <p class="text-shadow">Humidity: ${humidity}%</p>
             </div>
         `)
         get5DaysForecast(latitude, longitude)
@@ -60,20 +60,17 @@ function get5DaysForecast(latitude, longitude){
             if (i % 8 === 0 || i === data.list.length - 1) {
             weatherForecast.append(`
                     <div class="card forecast-card">
-                        ${moment(data.list[i].dt_txt).format('ddd Do')}  
+                        <p class="text-shadow">${moment(data.list[i].dt_txt).format('ddd Do')}</p>
                         <img src="${weatherIcon}" alt="${weatherIconAlt}">  
-                        <p>Temp: ${(data.list[i].main.temp - 273.15).toFixed()} °C</p>
-                        <p>Wind: ${data.list[i].wind.speed} m/s</p>
-                        <p>Humidity: ${data.list[i].main.humidity}%</p>
+                        <p class="text-shadow">Temp: ${(data.list[i].main.temp - 273.15).toFixed()} °C</p>
+                        <p class="text-shadow">Wind: ${data.list[i].wind.speed} m/s</p>
+                        <p class="text-shadow">Humidity: ${data.list[i].main.humidity}%</p>
                     </div>
             `);
             }
         };
     });
 }
-
-
-
 
 // function for the click event search button 
 $("#search-button").click(function(e) {
