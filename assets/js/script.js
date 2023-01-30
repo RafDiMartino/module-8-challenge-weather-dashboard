@@ -82,10 +82,11 @@ $("#search-button").click(function(e) {
         return
     }else{
         searches.push(cityName)
-        localStorage.setItem("pastSearches", searches);
+        localStorage.setItem("search-history", JSON.stringify(searches));
     } 
     getCurrentCity();
-    getFromLocalStorage()
+    initSearchHistory();
+    // getFromLocalStorage()
     weatherForecast.empty()
     forecastTitle.empty()
 });
@@ -101,25 +102,23 @@ function searchesWeather(){
     forecastTitle.empty()
 }
 
-//function to get past searches from local storage and display past searchers
-function getFromLocalStorage(){
-    
-    if (localStorage != "") {
-        var test = localStorage.getItem("pastSearches")
-        if (localStorage.getItem("pastSearches") === null) {
-            return
-        }else {
-            var test2 = test.split(",")
-        }
-        
-        console.log(test2)
-        for (let i = 0; i < test2.length; i++) {
-            const element = test2[i];
-            if (test2[i].includes(cityName)) {
-                pastSearches.prepend($(`<button class="past-search btn btn-secondary mb-2" data-city="${element}">`).text(element));
-            } 
-        }
+//function to get past searches from local storage
+function initSearchHistory(){
+    var storedHistory = localStorage.getItem('search-history');
+    if (storedHistory) {
+        var searchHistory = JSON.parse(storedHistory);
+        renderSearchHistory(searchHistory);
     }
 }
 
-getFromLocalStorage()
+//Function to render past searches buttons
+function renderSearchHistory(searchHistory) {
+    for (let i = 0; i < searchHistory.length; i++) {
+        const element = searchHistory[i];
+        if (searchHistory[i].includes(cityName)) {
+            pastSearches.prepend($(`<button class="past-search btn btn-secondary mb-2" data-city="${element}">`).text(element));
+        } 
+    }
+}
+
+initSearchHistory()
