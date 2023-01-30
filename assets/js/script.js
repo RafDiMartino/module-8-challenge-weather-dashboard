@@ -61,7 +61,7 @@ function get5DaysForecast(latitude, longitude){
             if (i % 8 === 0 || i === data.list.length - 1) {
             weatherForecast.append(`
                 <div class="card forecast-card">
-                    <p class="date text-shadow">${moment(data.list[i].dt_txt).format('ddd Do')}</p>
+                    <p class="date text-shadow">${moment(data.list[i].dt_txt).format('ddd Do MMMM')}</p>
                     <img src="${weatherIcon}" alt="${weatherIconAlt}">
                     <p class="text-shadow">Temp: ${(data.list[i].main.temp - 273.15).toFixed()} °C</p>
                     <p class="text-shadow">Wind: ${data.list[i].wind.speed} m/s</p>
