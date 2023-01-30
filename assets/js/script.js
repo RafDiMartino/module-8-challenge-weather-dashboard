@@ -53,7 +53,6 @@ function get5DaysForecast(latitude, longitude){
     }).then(function(data) {
         
         for (let i = 8; i < data.list.length; i++) {
-            console.log(data.list[i].weather[0].icon)
             var weatherIcon ="http://openweathermap.org/img/w/" + data.list[i].weather[0].icon + ".png";
             var weatherIconAlt = data.list[i].weather[0].main
             if (i % 8 === 0 || i === data.list.length - 1) {
