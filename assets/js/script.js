@@ -5,6 +5,7 @@ const forecastTitle = $("#forecast-title")
 const pastSearches = $("#history");
 var cityName = "";
 var searches = [];
+var error;
 
 // Function to get the current city weather
 function getCurrentCity(){
@@ -12,7 +13,11 @@ function getCurrentCity(){
 
     $.ajax({
         url: queryURL,
-        method: "GET"
+        method: "GET",
+        error: () => {
+            alert("Enter a valid City Name")
+            return
+        },
     }).then(function(data) {
         var latitude = data.city.coord.lat; // pulls in lat
         var longitude = data.city.coord.lon; // pulls in lon
@@ -51,19 +56,18 @@ function get5DaysForecast(latitude, longitude){
         url: queryURL5days,
         method: "GET"
     }).then(function(data) {
-        
         for (let i = 8; i < data.list.length; i++) {
             var weatherIcon ="http://openweathermap.org/img/w/" + data.list[i].weather[0].icon + ".png";
             var weatherIconAlt = data.list[i].weather[0].main
             if (i % 8 === 0 || i === data.list.length - 1) {
             weatherForecast.append(`
-                    <div class="card forecast-card">
-                        <p class="text-shadow">${moment(data.list[i].dt_txt).format('ddd Do')}</p>
-                        <img src="${weatherIcon}" alt="${weatherIconAlt}">
-                        <p class="text-shadow">Temp: ${(data.list[i].main.temp - 273.15).toFixed()} °C</p>
-                        <p class="text-shadow">Wind: ${data.list[i].wind.speed} m/s</p>
-                        <p class="text-shadow">Humidity: ${data.list[i].main.humidity}%</p>
-                    </div>
+                <div class="card forecast-card">
+                    <p class="text-shadow">${moment(data.list[i].dt_txt).format('ddd Do')}</p>
+                    <img src="${weatherIcon}" alt="${weatherIconAlt}">
+                    <p class="text-shadow">Temp: ${(data.list[i].main.temp - 273.15).toFixed()} °C</p>
+                    <p class="text-shadow">Wind: ${data.list[i].wind.speed} m/s</p>
+                    <p class="text-shadow">Humidity: ${data.list[i].main.humidity}%</p>
+                </div>
             `);
             }
         };
@@ -78,30 +82,44 @@ $("#search-button").click(function(e) {
         return
     }else{
         searches.push(cityName)
+        localStorage.setItem("pastSearches", searches);
     } 
     getCurrentCity();
-    addBtnPastSearch()
+    getFromLocalStorage()
     weatherForecast.empty()
     forecastTitle.empty()
 });
 
 // Adds a click event to all the buttons wiht a class of past-search 
-$(document).on('click', '.past-search', theFuncToCall);
+$(document).on('click', '.past-search', searchesWeather);
 
 // Function to re-display the current weather based on the click of past-searches buttons
-function theFuncToCall(){
+function searchesWeather(){
     cityName = $(this).attr("data-city")
     getCurrentCity()
     weatherForecast.empty()
     forecastTitle.empty()
 }
 
-// Function to display past searches buttons 
-function addBtnPastSearch(){
-    for (let i = 0; i < searches.length; i++) {
-        const element = searches[i];
-        if (searches[i].includes(cityName)) {
-            pastSearches.prepend($(`<button class="past-search btn btn-secondary mb-2" data-city="${element}">`).text(element));
-        } 
+//function to get past searches from local storage and display past searchers
+function getFromLocalStorage(){
+    
+    if (localStorage != "") {
+        var test = localStorage.getItem("pastSearches")
+        if (localStorage.getItem("pastSearches") === null) {
+            return
+        }else {
+            var test2 = test.split(",")
+        }
+        
+        console.log(test2)
+        for (let i = 0; i < test2.length; i++) {
+            const element = test2[i];
+            if (test2[i].includes(cityName)) {
+                pastSearches.prepend($(`<button class="past-search btn btn-secondary mb-2" data-city="${element}">`).text(element));
+            } 
+        }
     }
 }
+
+getFromLocalStorage()
