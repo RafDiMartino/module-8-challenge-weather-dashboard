@@ -5,7 +5,6 @@ const forecastTitle = $("#forecast-title")
 const pastSearches = $("#history");
 var cityName = "";
 var searches = [];
-var error;
 
 // Function to get the current city weather
 function getCurrentCity(){
@@ -62,7 +61,7 @@ function get5DaysForecast(latitude, longitude){
             if (i % 8 === 0 || i === data.list.length - 1) {
             weatherForecast.append(`
                 <div class="card forecast-card">
-                    <p class="text-shadow">${moment(data.list[i].dt_txt).format('ddd Do')}</p>
+                    <p class="date text-shadow">${moment(data.list[i].dt_txt).format('ddd Do')}</p>
                     <img src="${weatherIcon}" alt="${weatherIconAlt}">
                     <p class="text-shadow">Temp: ${(data.list[i].main.temp - 273.15).toFixed()} °C</p>
                     <p class="text-shadow">Wind: ${data.list[i].wind.speed} m/s</p>
@@ -86,7 +85,6 @@ $("#search-button").click(function(e) {
     } 
     getCurrentCity();
     initSearchHistory();
-    // getFromLocalStorage()
     weatherForecast.empty()
     forecastTitle.empty()
 });
@@ -116,9 +114,14 @@ function renderSearchHistory(searchHistory) {
     for (let i = 0; i < searchHistory.length; i++) {
         const element = searchHistory[i];
         if (searchHistory[i].includes(cityName)) {
-            pastSearches.prepend($(`<button class="past-search btn btn-secondary mb-2" data-city="${element}">`).text(element));
+            pastSearches.prepend($(`<button class="past-search btn btn-outline-dark mb-2" data-city="${element}">`).text(element));
         } 
     }
 }
 
 initSearchHistory()
+
+// Clear searches event listener
+$("#clear-button").click(function() {
+    localStorage.clear();
+})
