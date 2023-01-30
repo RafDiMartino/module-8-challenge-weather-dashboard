@@ -51,17 +51,16 @@ function get5DaysForecast(latitude, longitude){
         url: queryURL5days,
         method: "GET"
     }).then(function(data) {
-        var weatherIcon ="http://openweathermap.org/img/w/" + data.list[0].weather[0].icon + ".png";
-        var weatherIconAlt = data.list[0].weather[0].main
-        // console.log(data)
-        // console.log(latitude)
-        // console.log(longitude);
+        
         for (let i = 8; i < data.list.length; i++) {
+            console.log(data.list[i].weather[0].icon)
+            var weatherIcon ="http://openweathermap.org/img/w/" + data.list[i].weather[0].icon + ".png";
+            var weatherIconAlt = data.list[i].weather[0].main
             if (i % 8 === 0 || i === data.list.length - 1) {
             weatherForecast.append(`
                     <div class="card forecast-card">
                         <p class="text-shadow">${moment(data.list[i].dt_txt).format('ddd Do')}</p>
-                        <img src="${weatherIcon}" alt="${weatherIconAlt}">  
+                        <img src="${weatherIcon}" alt="${weatherIconAlt}">
                         <p class="text-shadow">Temp: ${(data.list[i].main.temp - 273.15).toFixed()} °C</p>
                         <p class="text-shadow">Wind: ${data.list[i].wind.speed} m/s</p>
                         <p class="text-shadow">Humidity: ${data.list[i].main.humidity}%</p>
