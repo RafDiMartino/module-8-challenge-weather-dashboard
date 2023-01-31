@@ -22,7 +22,7 @@ function getCurrentCity(){
         var longitude = data.city.coord.lon; // pulls in lon
         var city = data.city.name
         var todayDate = moment().format('ddd Do MMMM YYYY')
-        var weatherIcon ="http://openweathermap.org/img/w/" + data.list[0].weather[0].icon + ".png";
+        var weatherIcon ="https://openweathermap.org/img/w/" + data.list[0].weather[0].icon + ".png";
         var weatherIconAlt = data.list[0].weather[0].main
         var temperature = data.list[0].main.temp - 273.15
         var windSpeed = data.list[0].wind.speed
