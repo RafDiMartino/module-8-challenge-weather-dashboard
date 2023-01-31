@@ -104,8 +104,8 @@ function searchesWeather(){
 function initSearchHistory(){
     var storedHistory = localStorage.getItem('search-history');
     if (storedHistory) {
-        var searchHistory = JSON.parse(storedHistory);
-        renderSearchHistory(searchHistory);
+        searches = JSON.parse(storedHistory);
+        renderSearchHistory(searches);
     }
 }
 
