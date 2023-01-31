@@ -23,8 +23,7 @@ The acceptance criteria for this exercise were as follow:
     * The humidity
   * When a user click on a city in the search history they are again presented with current and future conditions for that city
 
-### Link to the deployed application 
-https://rafdimartino.github.io/module-8-challenge-weather-dashboard/
+### [Link to the deployed application](https://rafdimartino.github.io/module-8-challenge-weather-dashboard/)
 
 ## Installation
 N/A
